@@ -14,7 +14,12 @@ go get github.com/remerge/go-lock_free_timer
 
 ## Usage
 
-TBD
+```go
+start := time.Now()
+...
+t := lft.NewLockFreeTimer()
+t.UpdateSince(start)
+```
 
 ## Benchmark
 
