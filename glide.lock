@@ -1,0 +1,8 @@
+hash: f431b9f7589a07e65fa1fcf458c3ef50fe6852df0140912214f5bb7b73dc0121
+updated: 2017-03-26T17:13:11.508739902Z
+imports:
+- name: github.com/rcrowley/go-metrics
+  version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
+- name: github.com/remerge/rand
+  version: 115b299c404a9d1cf33c6a586794f3b4a2a240af
+testImports: []
