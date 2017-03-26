@@ -27,7 +27,7 @@ lint:
 	cd $(GOSRCDIR) && \
 		gometalinter --deadline=60s --enable-all --tests $(GOPATHS)
 
-test: lint
+test: #lint
 	cd $(GOSRCDIR) && \
 		go test -timeout 60s -v $(GOPATHS)
 

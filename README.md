@@ -15,3 +15,10 @@ go get github.com/remerge/go-lock_free_timer
 ## Usage
 
 TBD
+
+## Benchmark
+
+```
+BenchmarkUpdate-4                3000000               458 ns/op
+BenchmarkLockFreeUpdate-4       30000000                41.8 ns/op
+```
