@@ -1,8 +1,8 @@
-hash: f431b9f7589a07e65fa1fcf458c3ef50fe6852df0140912214f5bb7b73dc0121
-updated: 2017-03-26T17:13:11.508739902Z
+hash: 5873605617d5fec0a3844ec15f8d8b8304724bdb20e390c947c90e8a19a195ca
+updated: 2017-04-19T08:35:23.59420311Z
 imports:
 - name: github.com/rcrowley/go-metrics
   version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
-- name: github.com/remerge/rand
-  version: 115b299c404a9d1cf33c6a586794f3b4a2a240af
+- name: github.com/remerge/go-xorshift
+  version: c7e2786316c8b0c140cca990cc31ddfc7bd7ac6d
 testImports: []

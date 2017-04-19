@@ -6,7 +6,7 @@ import (
 	"time"
 
 	metrics "github.com/rcrowley/go-metrics"
-	"github.com/remerge/rand"
+	rand "github.com/remerge/go-xorshift"
 )
 
 func GetOrRegisterLockFreeTimer(name string, r metrics.Registry) metrics.Timer {
@@ -149,7 +149,9 @@ func (*LockFreeTimerSnapshot) UpdateSince(time.Time) {
 	panic("UpdateSince called on a LockFreeTimerSnapshot")
 }
 
-func (t *LockFreeTimerSnapshot) Variance() float64 { return t.histogram.Variance() }
+func (t *LockFreeTimerSnapshot) Variance() float64 {
+	return t.histogram.Variance()
+}
 
 type LockFreeSample struct {
 	count  int64
