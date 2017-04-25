@@ -1,5 +1,5 @@
 hash: 5873605617d5fec0a3844ec15f8d8b8304724bdb20e390c947c90e8a19a195ca
-updated: 2017-04-19T08:35:23.59420311Z
+updated: 2017-04-25T10:05:10.9445722Z
 imports:
 - name: github.com/rcrowley/go-metrics
   version: 1f30fe9094a513ce4c700b9a54458bbb0c96996c
