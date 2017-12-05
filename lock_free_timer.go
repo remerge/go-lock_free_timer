@@ -79,6 +79,8 @@ func (t *LockFreeTimer) StdDev() float64 {
 	return t.histogram.StdDev()
 }
 
+func (t *LockFreeTimer) Stop() {}
+
 func (t *LockFreeTimer) Sum() int64 {
 	return t.histogram.Sum()
 }
@@ -134,6 +136,8 @@ func (t *LockFreeTimerSnapshot) RateMean() float64 { return 0.0 }
 func (t *LockFreeTimerSnapshot) Snapshot() metrics.Timer { return t }
 
 func (t *LockFreeTimerSnapshot) StdDev() float64 { return t.histogram.StdDev() }
+
+func (t *LockFreeTimerSnapshot) Stop() {}
 
 func (t *LockFreeTimerSnapshot) Sum() int64 { return t.histogram.Sum() }
 
