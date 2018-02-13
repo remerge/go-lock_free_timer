@@ -1,8 +1,8 @@
 hash: 5873605617d5fec0a3844ec15f8d8b8304724bdb20e390c947c90e8a19a195ca
-updated: 2017-12-05T12:51:50.115747219+01:00
+updated: 2018-02-12T14:40:27.613196775Z
 imports:
 - name: github.com/rcrowley/go-metrics
-  version: e181e095bae94582363434144c61a9653aff6e50
+  version: 8732c616f52954686704c8645fe1a9d59e9df7c1
 - name: github.com/remerge/go-xorshift
-  version: 311573fe0a94af7b7597258aaf1fc2fbee2db0d4
+  version: 38a062789887270f4b85fd03a1756560552eed97
 testImports: []
