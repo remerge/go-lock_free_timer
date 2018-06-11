@@ -7,7 +7,8 @@ import (
 	"github.com/rcrowley/go-metrics"
 )
 
-// Registry implements Registry interface from go-metrics but uses sync.Map for cache
+// Registry implements Registry interface from go-metrics but
+// uses sync.Map for cache
 type Registry struct {
 	cache sync.Map
 }
@@ -93,7 +94,8 @@ func (r *Registry) GetOrRegister(name string, m interface{}) (m1 interface{}) {
 		m = v.Call(nil)[0].Interface()
 	}
 	switch m.(type) {
-	case metrics.Counter, metrics.Gauge, metrics.GaugeFloat64, metrics.Healthcheck, metrics.Histogram, metrics.Meter, metrics.Timer:
+	case metrics.Counter, metrics.Gauge, metrics.GaugeFloat64,
+		metrics.Healthcheck, metrics.Histogram, metrics.Meter, metrics.Timer:
 		m1, _ = r.cache.LoadOrStore(name, m)
 	}
 	return m1
