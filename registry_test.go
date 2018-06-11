@@ -2,7 +2,6 @@ package lft_test
 
 import (
 	"sort"
-	"strconv"
 	"testing"
 
 	"github.com/rcrowley/go-metrics"
@@ -53,9 +52,8 @@ func BenchmarkRegistry_GetOrRegister(b *testing.B) {
 	b.Run(`builtin`, func(b *testing.B) {
 		b.SetParallelism(1000)
 		b.RunParallel(func(pb *testing.PB) {
-			var a int
 			for pb.Next() {
-				metrics.GetOrRegisterCounter(strconv.Itoa(a), metrics.DefaultRegistry)
+				metrics.GetOrRegisterCounter("a", metrics.DefaultRegistry)
 			}
 		})
 	})
@@ -63,9 +61,8 @@ func BenchmarkRegistry_GetOrRegister(b *testing.B) {
 		r := &lft.Registry{}
 		b.SetParallelism(1000)
 		b.RunParallel(func(pb *testing.PB) {
-			var a int
 			for pb.Next() {
-				metrics.GetOrRegisterCounter(strconv.Itoa(a), r)
+				metrics.GetOrRegisterCounter("a", r)
 			}
 		})
 	})
