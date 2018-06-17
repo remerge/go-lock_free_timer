@@ -9,6 +9,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestRegistry_PullFrom(t *testing.T) {
+	r := &lft.Registry{}
+	b := metrics.NewRegistry()
+
+	metrics.GetOrRegisterCounter("a", r)
+	metrics.GetOrRegisterCounter("b", b)
+
+	r.PullFrom(b)
+
+	assert.NotNil(t, r.Get("a"))
+	assert.NotNil(t, r.Get("b"))
+}
+
 func TestRegistry_Register(t *testing.T) {
 	r := &lft.Registry{}
 	assert.NoError(t, r.Register("a", metrics.NewCounter()))
