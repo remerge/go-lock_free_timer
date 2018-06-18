@@ -15,12 +15,16 @@ type Registry struct {
 	cache sync.Map
 }
 
-// PullFrom adds all missing metrics from given registry.
+// PullFrom adds all missing metrics from given registry and returns number
+// of pulled metrics.
 // Run periodically for compatibility during migrations.
-func (r *Registry) PullFrom(source metrics.Registry) {
+func (r *Registry) PullFrom(source metrics.Registry) (n int) {
 	source.Each(func(s string, i interface{}) {
-		r.cache.LoadOrStore(s, i)
+		if _, loaded := r.cache.LoadOrStore(s, i); !loaded {
+			n++
+		}
 	})
+	return n
 }
 
 func (r *Registry) Each(fn func(string, interface{})) {

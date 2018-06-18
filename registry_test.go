@@ -16,7 +16,8 @@ func TestRegistry_PullFrom(t *testing.T) {
 	metrics.GetOrRegisterCounter("a", r)
 	metrics.GetOrRegisterCounter("b", b)
 
-	r.PullFrom(b)
+	n := r.PullFrom(b)
+	assert.Equal(t, 1, n)
 
 	assert.NotNil(t, r.Get("a"))
 	assert.NotNil(t, r.Get("b"))
