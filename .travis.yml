@@ -1,14 +1,24 @@
 sudo: false
 language: go
 go:
-- 1.9.2
+- "1.11"
+
 cache:
   directories:
-  - vendor
-install:
-- make dep
+  - $GOPATH/pkg/mod
+  - $GOPATH/bin
+  - $HOME/.cache/go-build
+
+before_install:
+- git config --global url.git@github.com:.insteadof https://github.com/
+
 script:
-- make test clean
+- make test
+
+branches:
+  only:
+  - master
+
 notifications:
   slack:
-    secure: hvK8RHca3M9tP9KgUjwVV+95+7+jHqrhC5FHl5cBgvDzOpR6L/zsF67Gfovtb3DKFNU9MOBMac/Uq4yIPB8q5DsoFX2/FFdqaXkDtZc29jp0zx9pz14DuKwyA87hXmn5hbPeJucUZsIW3FPJME7c0s6fcoEvK5g1dH/zNWVxOI7bdhXRxBE2aYewBWEpDtOWd4bVLL/dtS/+ICMmgqbr2NyOj6vNPjLcVpSD6iDbGd/PW3DwOY89xNze3JkaV6BigtUvJVxWk+UWljv2/DEDw5IZU4S8uRP8nL1Szga+xiDVmz8mKBNk4RgLmxy919AqTcNN0/QFW+VcJ3Cju4WSbu92Bv9q/ldpW6DnMLD97gnqROd25g7gNiT3R82dm2svF8sRppdFwVw2aYZA3QfpIi+3fZwApSbezwselOwZH2ib7VjhwyTYyoRUafqZXZkfOP6RWoH1CoupdvRXNWNBNBabiEgabqv8zNN6+fSkV9YdMUg+fe8/thp27jT7D/fQi0wX4qdtViPyFJD3jfQHzQjUdQR04NMZU+COklJLNBKVKLE5yNd2op1W5GFs5NZmVao8kjbh4TjUDTxA+6rDp99yT1HFwtOBAFrCSLTzJgUQEcLT+OEk2GTkNr55ogZbxppkI/k8L7rJngnaXQ/LvBgZ17E2EqiI7WNg57m3wnw=
+    secure: A/BZm/7ISFDUQi+IDYtmph8Jd7Un7Gpbl1N/L7J53dpvwirHEcoir4a105fgDAVw21JQ8YFQNZTtwR42YGKd1uUs3F+u5PwXk5e3FmU2yCfAhT7Fc7G7rlR4TzsF8llltKUqxv34yBU3P6pmosomMkyyV1ohbAqB10uctxqa02w=
