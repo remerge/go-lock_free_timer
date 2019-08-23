@@ -6,6 +6,10 @@ Package `lft` provides a `Timer` compatible with
 The implementation accepts a data race in exchange for much lower mutex
 contention and latency impact on high volume code paths.
 
+It's important to note that as the samples used for the timer are essentially
+cleared during each snapshot, the lock free timer is only suitable for cases
+where `Update` is called frequently between snapshots.
+
 ## Install
 
 ```bash
