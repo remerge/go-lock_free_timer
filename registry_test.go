@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/rcrowley/go-metrics"
-	"github.com/remerge/go-lock_free_timer"
+	lft "github.com/remerge/go-lock_free_timer"
 	"github.com/stretchr/testify/assert"
 )
 
