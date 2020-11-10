@@ -109,7 +109,7 @@ func (r *Registry) GetOrRegister(name string, m interface{}) (m1 interface{}) {
 	}
 	switch m.(type) {
 	case metrics.Counter, metrics.Gauge, metrics.GaugeFloat64,
-	metrics.Healthcheck, metrics.Histogram, metrics.Meter, metrics.Timer:
+		metrics.Healthcheck, metrics.Histogram, metrics.Meter, metrics.Timer:
 		m1, _ = r.cache.LoadOrStore(name, m)
 	}
 	return m1
