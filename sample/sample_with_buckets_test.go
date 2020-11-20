@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLegacyWithBuckets_Values(t *testing.T) {
+func TestWithBuckets_Values(t *testing.T) {
 	buckets := []float64{10, 20}
-	sut := NewLegacyWithBuckets(10, buckets...)
+	sut := WithBuckets(NewLockFree(10), buckets...)
 
 	sut.Update(5)
 	sut.Update(10)
@@ -22,7 +22,7 @@ func TestLegacyWithBuckets_Values(t *testing.T) {
 	})
 
 	t.Run(`Bucket Values`, func(t *testing.T) {
-		sutWithBuckets := sut.(LegacyWithBuckets)
+		sutWithBuckets := sut.(SampleWithBuckets)
 
 		require.NotNil(t, sutWithBuckets)
 		buckets, values := sutWithBuckets.BucketsAndValues()
@@ -32,15 +32,15 @@ func TestLegacyWithBuckets_Values(t *testing.T) {
 	})
 }
 
-func TestLegacyWithBuckets_InterfaceCompatibility(t *testing.T) {
+func TestWithBuckets_InterfaceCompatibility(t *testing.T) {
 	buckets := []float64{10, 20}
 	sut := metrics.NewHistogram(
-		NewLegacyWithBuckets(10, buckets...),
+		WithBuckets(NewLockFree(10), buckets...),
 	)
 
 	registry := metrics.NewRegistry()
 	registry.Register(`histogram with custom sample`, sut)
 
 	histogram := registry.Get(`histogram with custom sample`).(metrics.Histogram)
-	assert.Implements(t, (*LegacyWithBuckets)(nil), histogram.Sample())
+	assert.Implements(t, (*SampleWithBuckets)(nil), histogram.Sample())
 }

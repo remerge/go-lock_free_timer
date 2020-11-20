@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestValues(t *testing.T) {
+func TestPartialBucketValues(t *testing.T) {
 	updateWithValues := func(sut bucketPartialSample, values ...int64) {
 		t.Helper()
 		for _, value := range values {
