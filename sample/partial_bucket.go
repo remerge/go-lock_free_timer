@@ -5,6 +5,33 @@ import (
 	dto "github.com/prometheus/client_model/go"
 )
 
+func DomeBuckets(min, mid, max, base, factor float64) []float64 {
+	if min <= 0 {
+		panic("DomeBuckets needs a positive min value")
+	}
+	if factor < 1 {
+		panic("DomeBuckets needs a factor greater than 1")
+	}
+
+	res := []float64{mid}
+	for {
+		var added bool
+		if v := mid - base; v >= min {
+			added = true
+			res = append([]float64{v}, res...)
+		}
+		if v := mid + base; v <= max {
+			added = true
+			res = append(res, v)
+		}
+		base *= factor
+		if !added {
+			break
+		}
+	}
+	return res
+}
+
 // Provides a partial implementation of metrics.Sample interface to be used as a mixin.
 // The whole implementation is based on an underlying `prometheus.Histogram`.
 type bucketPartialSample struct {

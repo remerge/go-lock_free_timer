@@ -7,6 +7,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestDomeBuckets(t *testing.T) {
+	assert.EqualValues(t, []float64{20, 60, 80, 90, 100, 110, 120, 140, 180, 260, 420, 740}, DomeBuckets(1, 100, 1000, 10, 2))
+}
+
 func TestPartialBucketValues(t *testing.T) {
 	updateWithValues := func(sut bucketPartialSample, values ...int64) {
 		t.Helper()
