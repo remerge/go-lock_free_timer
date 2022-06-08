@@ -20,6 +20,13 @@ func NewLockFreeTimer() metrics.Timer {
 	}
 }
 
+func NewCustomLockFreeTimer(counter metrics.Counter, histogram metrics.Histogram) metrics.Timer {
+	return &LockFreeTimer{
+		counter:   counter,
+		histogram: histogram,
+	}
+}
+
 type LockFreeTimer struct {
 	counter   metrics.Counter
 	histogram metrics.Histogram
