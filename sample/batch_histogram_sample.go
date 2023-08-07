@@ -27,7 +27,7 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 		// 1 more value in the buckets list than there are buckets represented,
 		// because in runtime/metrics, the bucket values represent *boundaries*,
 		// and non-Inf boundaries are inclusive lower bounds for that bucket.
-		counts: make([]int64, len(buckets)-1),
+		counts: make([]int64, len(buckets)),
 	}
 	return h
 }
