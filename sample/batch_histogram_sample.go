@@ -13,7 +13,6 @@ type BatchHistogramSample struct {
 	mu      sync.Mutex
 	buckets []float64 // Inclusive lower bounds, like runtime/metrics.
 	counts  []uint64
-	sum     float64
 }
 
 func NewBatchHistogramSample(buckets []float64) metrics.Sample {
@@ -37,14 +36,13 @@ func (h *BatchHistogramSample) Clear() {
 	for i := range h.counts {
 		h.counts[i] = 0
 	}
-	h.sum = 0
 }
 
 func (h *BatchHistogramSample) Count() int64 {
 	return int64(len(h.buckets))
 }
 
-func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Histogram, sum float64) {
+func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Histogram) {
 	counts, buckets := his.Counts, his.Buckets
 
 	h.mu.Lock()
@@ -59,7 +57,6 @@ func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Hi
 			j++
 		}
 	}
-	h.sum = sum
 }
 
 func (s *BatchHistogramSample) Max() int64 {
