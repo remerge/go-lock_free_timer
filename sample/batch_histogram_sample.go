@@ -93,7 +93,7 @@ func (s *BatchHistogramSample) Size() int {
 }
 
 func (s *BatchHistogramSample) Snapshot() metrics.Sample {
-	return nil
+	return metrics.NewSampleSnapshot(0, []int64{})
 }
 
 func (s *BatchHistogramSample) StdDev() float64 {
