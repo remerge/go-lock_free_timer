@@ -32,8 +32,13 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 	return h
 }
 
+// Returns bucket upper bounds & theirs values + 1 extra bucket for Inf+
 func (h *BatchHistogramSample) BucketsAndValues() (buckets []float64, values []int64) {
-	return h.buckets, h.counts
+	retBuckets := h.buckets[1:]
+	retCount := make([]int64, len(h.counts)+1)
+	copy(retCount, h.counts)
+
+	return retBuckets, retCount
 }
 
 func (h *BatchHistogramSample) Clear() {
