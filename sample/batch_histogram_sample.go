@@ -12,7 +12,7 @@ import (
 type BatchHistogramSample struct {
 	mu      sync.Mutex
 	buckets []float64 // Inclusive lower bounds, like runtime/metrics.
-	counts  []uint64
+	counts  []int64
 }
 
 func NewBatchHistogramSample(buckets []float64) metrics.Sample {
@@ -27,9 +27,13 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 		// 1 more value in the buckets list than there are buckets represented,
 		// because in runtime/metrics, the bucket values represent *boundaries*,
 		// and non-Inf boundaries are inclusive lower bounds for that bucket.
-		counts: make([]uint64, len(buckets)-1),
+		counts: make([]int64, len(buckets)-1),
 	}
 	return h
+}
+
+func (h *BatchHistogramSample) BucketsAndValues() (buckets []float64, values []int64) {
+	return h.buckets, h.counts
 }
 
 func (h *BatchHistogramSample) Clear() {
@@ -52,7 +56,7 @@ func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Hi
 	// Copy and reduce buckets.
 	var j int
 	for i, count := range counts {
-		h.counts[j] += count
+		h.counts[j] += int64(count)
 		if buckets[i+1] >= h.buckets[j+1] {
 			j++
 		}
