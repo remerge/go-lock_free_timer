@@ -1,7 +1,14 @@
 # go-lock_free_timer
 
+# Provides lock free timer and sample
+Name can be confusing because it suggests that only timer is implemented
+
+
+
 Package `lft` provides a `Timer` compatible with
 `github.com/rcrowley/go-metrics` without a mutex on the hot `Update` code path.
+
+
 
 The implementation accepts a data race in exchange for much lower mutex
 contention and latency impact on high volume code paths.
