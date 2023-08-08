@@ -17,6 +17,12 @@ func TestWithBuckets_Values(t *testing.T) {
 	sut.Update(15)
 	sut.Update(21)
 
+	t.Run(`Check buckets and values`, func(t *testing.T) {
+		buckets, values := sut.BucketsAndValues()
+		require.Equal(t, []float64{10, 20}, buckets)
+		require.Equal(t, []int64{2, 3, 3}, values)
+	})
+
 	t.Run(`Legacy Values`, func(t *testing.T) {
 		assert.EqualValues(t, []int64{5, 10, 15, 21, 0, 0, 0, 0, 0, 0}, sut.Values())
 	})

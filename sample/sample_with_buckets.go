@@ -6,6 +6,7 @@ import (
 
 type SampleWithBuckets interface {
 	metrics.Sample
+	// Returns bucket upper bounds & theirs values + 1 extra bucket for Inf+
 	BucketsAndValues() (buckets []float64, values []int64)
 }
 

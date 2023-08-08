@@ -9,6 +9,9 @@ import (
 	metrics "github.com/rcrowley/go-metrics"
 )
 
+// If we want to update sample from Histogram, we cannot use bucketPartialSample
+// But this implementation still implements BucketsAndValues interface
+// Inspired by batch histogram https://github.com/prometheus/client_golang/blob/5e78d5f66b851fef874b783814b2e884df2798d0/prometheus/go_collector_latest.go/#L454-L455
 type BatchHistogramSample struct {
 	mu      sync.Mutex
 	buckets []float64 // Inclusive lower bounds, like runtime/metrics.
@@ -34,9 +37,18 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 
 // Returns bucket upper bounds & theirs values + 1 extra bucket for Inf+
 func (h *BatchHistogramSample) BucketsAndValues() (buckets []float64, values []int64) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
 	retBuckets := h.buckets[1:]
 	retCount := make([]int64, len(h.counts)+1)
-	copy(retCount, h.counts)
+	for i := range h.counts {
+		retCount[i] = h.counts[i]
+		if i > 0 {
+			retCount[i] += retCount[i-1]
+		}
+	}
+	retCount[len(h.counts)] = retCount[len(h.counts)-1]
 
 	return retBuckets, retCount
 }
@@ -68,6 +80,7 @@ func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Hi
 	}
 }
 
+// We do not need all this because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Max() int64 {
 	return 0
 }

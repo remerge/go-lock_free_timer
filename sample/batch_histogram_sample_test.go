@@ -22,7 +22,7 @@ func TestBatchHistogramSample(t *testing.T) {
 
 	buckets, values := batchH.BucketsAndValues()
 	require.EqualValues(t, buckets, []float64{20, 30})
-	require.EqualValues(t, values, []int64{1, 2, 0})
+	require.EqualValues(t, values, []int64{1, 3, 3})
 
 	float64Hist.Buckets = []float64{5, 10, 20, 30}
 	float64Hist.Counts = []uint64{1, 2, 4}
@@ -31,5 +31,5 @@ func TestBatchHistogramSample(t *testing.T) {
 
 	buckets, values = batchH.BucketsAndValues()
 	require.EqualValues(t, buckets, []float64{20, 30})
-	require.EqualValues(t, values, []int64{3, 4, 0})
+	require.EqualValues(t, values, []int64{3, 7, 7})
 }

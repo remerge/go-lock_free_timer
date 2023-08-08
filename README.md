@@ -4,11 +4,8 @@
 Name can be confusing because it suggests that only timer is implemented
 
 
-
 Package `lft` provides a `Timer` compatible with
 `github.com/rcrowley/go-metrics` without a mutex on the hot `Update` code path.
-
-
 
 The implementation accepts a data race in exchange for much lower mutex
 contention and latency impact on high volume code paths.
@@ -16,6 +13,13 @@ contention and latency impact on high volume code paths.
 It's important to note that as the samples used for the timer are essentially
 cleared during each snapshot, the lock free timer is only suitable for cases
 where `Update` is called frequently between snapshots.
+
+Package `sample` provides two different samples compatible with `github.com/rcrowley/go-metrics`
+
+* `BatchHistogramSample` - can be updated from histogram (`Float64Histogram`)
+* `SampleWithBuckets` - can be updated using single values
+
+Both allow setting fixed amount of buckets.
 
 ## Install
 
