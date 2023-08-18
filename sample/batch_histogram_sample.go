@@ -16,6 +16,7 @@ type BatchHistogramSample struct {
 	mu      sync.Mutex
 	buckets []float64 // Inclusive lower bounds, like runtime/metrics.
 	counts  []int64
+	sum     int64
 }
 
 func NewBatchHistogramSample(buckets []float64) metrics.Sample {
@@ -57,10 +58,12 @@ func (h *BatchHistogramSample) Clear() {
 	for i := range h.counts {
 		h.counts[i] = 0
 	}
+	h.sum = 0
 }
 
+// Count of observations
 func (h *BatchHistogramSample) Count() int64 {
-	return int64(len(h.buckets))
+	return h.sum
 }
 
 func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Histogram) {
@@ -74,57 +77,69 @@ func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Hi
 	var j int
 	for i, count := range counts {
 		h.counts[j] += int64(count)
+		h.sum += int64(count)
 		if buckets[i+1] >= h.buckets[j+1] {
 			j++
 		}
 	}
 }
 
-// We do not need all this because we rely on prometheus for aggregations
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Max() int64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Mean() float64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Min() int64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Percentile(p float64) float64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Percentiles(_ []float64) []float64 {
 	return nil
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Size() int {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Snapshot() metrics.Sample {
 	return metrics.NewSampleSnapshot(0, []int64{})
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) StdDev() float64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Sum() int64 {
 	return 0
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Update(v int64) {
 
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Values() []int64 {
 	return nil
 }
 
+// Returning NOOP because we rely on prometheus for aggregations
 func (s *BatchHistogramSample) Variance() float64 {
 	return 0
 }

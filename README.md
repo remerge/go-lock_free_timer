@@ -1,8 +1,9 @@
 # go-lock_free_timer
 
-# Provides lock free timer and sample
+Provides lock free timer and sample
 Name can be confusing because it suggests that only timer is implemented
 
+## Timer package
 
 Package `lft` provides a `Timer` compatible with
 `github.com/rcrowley/go-metrics` without a mutex on the hot `Update` code path.
@@ -14,10 +15,12 @@ It's important to note that as the samples used for the timer are essentially
 cleared during each snapshot, the lock free timer is only suitable for cases
 where `Update` is called frequently between snapshots.
 
+## Sample package
+
 Package `sample` provides two different samples compatible with `github.com/rcrowley/go-metrics`
 
-* `BatchHistogramSample` - can be updated from histogram (`Float64Histogram`)
-* `SampleWithBuckets` - can be updated using single values
+* `BatchHistogramSample` - can be updated from histogram (`Float64Histogram`). Updates all bucket counts directly in a batch
+* `SampleWithBuckets` - can be updated using single values. Update single bucket counts by passing observed values to Update
 
 Both allow setting fixed amount of buckets.
 
