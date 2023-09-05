@@ -28,7 +28,7 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 	}
 	if buckets[len(buckets)-1] == math.Inf(+1) {
 		fmt.Println(len(buckets))
-		buckets = buckets[len(buckets)-1:]
+		buckets = buckets[:len(buckets)-1]
 		fmt.Println(len(buckets))
 	}
 	h := &BatchHistogramSample{
