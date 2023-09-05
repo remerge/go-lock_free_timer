@@ -1,6 +1,7 @@
 package sample
 
 import (
+	"fmt"
 	"math"
 	"sync"
 
@@ -24,6 +25,11 @@ func NewBatchHistogramSample(buckets []float64) metrics.Sample {
 	// But -Inf bucket should not be allowed for prometheus histograms.
 	if buckets[0] == math.Inf(-1) {
 		buckets = buckets[1:]
+	}
+	if buckets[len(buckets)-1] == math.Inf(+1) {
+		fmt.Println(len(buckets))
+		buckets = buckets[len(buckets)-1:]
+		fmt.Println(len(buckets))
 	}
 	h := &BatchHistogramSample{
 		buckets: buckets,
