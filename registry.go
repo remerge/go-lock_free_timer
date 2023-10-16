@@ -9,22 +9,30 @@ import (
 
 var DefaultRegistry = &Registry{}
 
-// Registry implements Registry interface from go-metrics but
-// uses sync.Map for cache
+// Registry is a go-metrics Registry implementation which provides uses sync.Map (instead of a
+// mutex) to make it safe for concurrent use.
 type Registry struct {
-	cache sync.Map
+	cache  sync.Map
+	pulled sync.Map
 }
 
-// PullFrom adds all missing metrics from given registry and returns number
-// of pulled metrics.
-// Run periodically for compatibility during migrations.
-func (r *Registry) PullFrom(source metrics.Registry) (n int) {
-	source.Each(func(s string, i interface{}) {
-		if _, loaded := r.cache.LoadOrStore(s, i); !loaded {
-			n++
+// PullFrom adds metrics from a given registry. If a metric with the same name already exists it
+// will be replaced with the one from the source. To support unregistering metrics, this function
+// will remove any metrics previously pulled unless they are present in the source. It is therefore
+// not recommended to call this function regularly for more than one source.
+func (r *Registry) PullFrom(source metrics.Registry) {
+	r.pulled.Range(func(key, value interface{}) bool {
+		if metric := source.Get(key.(string)); metric == nil {
+			r.Unregister(key.(string))
+			r.pulled.Delete(key)
 		}
+		return true
 	})
-	return n
+
+	source.Each(func(s string, i interface{}) {
+		r.cache.Swap(s, i)
+		r.pulled.Store(s, true)
+	})
 }
 
 func (r *Registry) Each(fn func(string, interface{})) {

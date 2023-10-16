@@ -10,17 +10,27 @@ import (
 )
 
 func TestRegistry_PullFrom(t *testing.T) {
-	r := &lft.Registry{}
-	b := metrics.NewRegistry()
+	r1 := &lft.Registry{}
+	r2 := metrics.NewRegistry()
 
-	metrics.GetOrRegisterCounter("a", r)
-	metrics.GetOrRegisterCounter("b", b)
+	a := metrics.GetOrRegisterCounter("a", r1)
+	b := metrics.GetOrRegisterCounter("b", r2)
 
-	n := r.PullFrom(b)
-	assert.Equal(t, 1, n)
+	r1.PullFrom(r2)
+	assert.Equal(t, a, r1.Get("a"))
+	assert.Equal(t, b, r1.Get("b"))
 
-	assert.NotNil(t, r.Get("a"))
-	assert.NotNil(t, r.Get("b"))
+	r2.Unregister("b")
+
+	r1.PullFrom(r2)
+	assert.Equal(t, a, r1.Get("a"))
+	assert.Equal(t, nil, r1.Get("b"))
+
+	r2.Unregister("a")
+	a2 := metrics.GetOrRegisterCounter("a", r2)
+
+	r1.PullFrom(r2)
+	assert.Equal(t, a2, r1.Get("a"))
 }
 
 func TestRegistry_Register(t *testing.T) {
