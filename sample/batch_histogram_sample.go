@@ -85,61 +85,60 @@ func (h *BatchHistogramSample) UpdateFromHistogram(his *runtimemetrics.Float64Hi
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Max() int64 {
+func (h *BatchHistogramSample) Max() int64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Mean() float64 {
+func (h *BatchHistogramSample) Mean() float64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Min() int64 {
+func (h *BatchHistogramSample) Min() int64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Percentile(p float64) float64 {
+func (h *BatchHistogramSample) Percentile(_ float64) float64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Percentiles(_ []float64) []float64 {
+func (h *BatchHistogramSample) Percentiles(_ []float64) []float64 {
 	return nil
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Size() int {
+func (h *BatchHistogramSample) Size() int {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Snapshot() metrics.Sample {
+func (h *BatchHistogramSample) Snapshot() metrics.Sample {
 	return metrics.NewSampleSnapshot(0, []int64{})
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) StdDev() float64 {
+func (h *BatchHistogramSample) StdDev() float64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Sum() int64 {
+func (h *BatchHistogramSample) Sum() int64 {
 	return 0
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Update(v int64) {
-
+func (h *BatchHistogramSample) Update(_ int64) {
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Values() []int64 {
+func (h *BatchHistogramSample) Values() []int64 {
 	return nil
 }
 
 // Returning NOOP because we rely on prometheus for aggregations
-func (s *BatchHistogramSample) Variance() float64 {
+func (h *BatchHistogramSample) Variance() float64 {
 	return 0
 }
