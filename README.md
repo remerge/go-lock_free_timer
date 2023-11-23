@@ -1,7 +1,6 @@
-# go-lock_free_timer
+# Lock Free Timer for Go
 
 Provides lock free timer and sample
-Name can be confusing because it suggests that only timer is implemented
 
 ## Timer package
 
@@ -17,10 +16,13 @@ where `Update` is called frequently between snapshots.
 
 ## Sample package
 
-Package `sample` provides two different samples compatible with `github.com/rcrowley/go-metrics`
+Package `sample` provides two different samples compatible with
+`github.com/rcrowley/go-metrics`
 
-* `BatchHistogramSample` - can be updated from histogram (`Float64Histogram`). Updates all bucket counts directly in a batch
-* `SampleWithBuckets` - can be updated using single values. Update single bucket counts by passing observed values to Update
+- `BatchHistogramSample` - can be updated from histogram (`Float64Histogram`).
+  Updates all bucket counts directly in a batch
+- `SampleWithBuckets` - can be updated using single values. Update single bucket
+  counts by passing observed values to Update
 
 Both allow setting fixed amount of buckets.
 
@@ -41,7 +43,7 @@ t.UpdateSince(start)
 
 ## Benchmark
 
-```
+```plain
 BenchmarkUpdate-4                3000000               458 ns/op
 BenchmarkLockFreeUpdate-4       30000000                41.8 ns/op
 ```
