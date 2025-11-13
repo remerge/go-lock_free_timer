@@ -1,12 +1,11 @@
 module github.com/remerge/go-lock_free_timer
 
-go 1.21
+go 1.22
 
 require (
 	github.com/prometheus/client_golang v1.17.0
 	github.com/prometheus/client_model v0.5.0
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
-	github.com/remerge/go-xorshift v0.0.0-20231129160643-2db0e285f2b3
 	github.com/stretchr/testify v1.8.2
 )
 

@@ -4,8 +4,9 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"math/rand/v2"
+
 	metrics "github.com/rcrowley/go-metrics"
-	rand "github.com/remerge/go-xorshift"
 )
 
 type lockFreeSample struct {
@@ -97,7 +98,7 @@ func (s *lockFreeSample) Update(v int64) {
 	if int(count) <= len(s.values) {
 		s.values[count-1] = v
 	} else {
-		r := rand.Int63n(count)
+		r := rand.Int64N(count)
 		if int(r) < len(s.values) {
 			s.values[r] = v
 		}
