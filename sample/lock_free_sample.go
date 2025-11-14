@@ -118,10 +118,3 @@ func (s *lockFreeSample) Variance() float64 {
 	defer s.mutex.Unlock()
 	return metrics.SampleVariance(s.values)
 }
-
-func min(s, v int) int {
-	if s <= v {
-		return s
-	}
-	return v
-}
