@@ -21,7 +21,7 @@ type Registry struct {
 // will remove any metrics previously pulled unless they are present in the source. It is therefore
 // not recommended to call this function regularly for more than one source.
 func (r *Registry) PullFrom(source metrics.Registry) {
-	r.pulled.Range(func(key, value interface{}) bool {
+	r.pulled.Range(func(key, _ interface{}) bool {
 		if metric := source.Get(key.(string)); metric == nil {
 			r.Unregister(key.(string))
 			r.pulled.Delete(key)
@@ -131,7 +131,7 @@ func (r *Registry) Register(name string, m interface{}) error {
 }
 
 func (r *Registry) RunHealthchecks() {
-	r.Each(func(s string, i interface{}) {
+	r.Each(func(_ string, i interface{}) {
 		if h, ok := i.(metrics.Healthcheck); ok {
 			h.Check()
 		}
@@ -143,7 +143,7 @@ func (r *Registry) Unregister(name string) {
 }
 
 func (r *Registry) UnregisterAll() {
-	r.cache.Range(func(key, value interface{}) bool {
+	r.cache.Range(func(key, _ interface{}) bool {
 		r.cache.Delete(key)
 		return true
 	})
