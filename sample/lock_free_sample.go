@@ -75,7 +75,9 @@ func (s *lockFreeSample) Snapshot() metrics.Sample {
 	defer s.mutex.Unlock()
 	count := atomic.SwapInt64(&s.count, 0)
 	values := make([]int64, min(int(count), len(s.values)))
-	copy(values, s.values)
+	for i := range values {
+		values[i] = atomic.LoadInt64(&s.values[i])
+	}
 	return metrics.NewSampleSnapshot(count, values)
 }
 
@@ -92,15 +94,13 @@ func (s *lockFreeSample) Sum() int64 {
 }
 
 func (s *lockFreeSample) Update(v int64) {
-	// we accept a data race here to reduce lock
-	// contention and to increase performance
 	count := atomic.AddInt64(&s.count, 1)
 	if int(count) <= len(s.values) {
-		s.values[count-1] = v
+		atomic.StoreInt64(&s.values[count-1], v)
 	} else {
 		r := rand.Int64N(count)
 		if int(r) < len(s.values) {
-			s.values[r] = v
+			atomic.StoreInt64(&s.values[r], v)
 		}
 	}
 }
@@ -109,7 +109,9 @@ func (s *lockFreeSample) Values() []int64 {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	values := make([]int64, len(s.values))
-	copy(values, s.values)
+	for i := range values {
+		values[i] = atomic.LoadInt64(&s.values[i])
+	}
 	return values
 }
 
