@@ -91,6 +91,7 @@ func (s *lockFreeSample) Sum() int64 {
 	return metrics.SampleSum(s.values)
 }
 
+//go:norace
 func (s *lockFreeSample) Update(v int64) {
 	// we accept a data race here to reduce lock
 	// contention and to increase performance
