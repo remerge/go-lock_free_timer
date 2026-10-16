@@ -23,6 +23,17 @@ permissions:
 
 jobs:
   go-checks:
-    uses: remerge/workflows/.github/workflows/go-checks.yml@main
-    secrets:
-      ssh_key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+    # Public repositories cannot call the private remerge/workflows repository.
+    # Keep the generation, lint and race gates local and credential-free.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Verify generated sources
+        run: make gen && git diff --exit-code --name-only HEAD
+      - name: Lint
+        run: make lint
+      - name: Test with race detector
+        run: make race-nocache

@@ -2,7 +2,6 @@ package sample
 
 import (
 	"sync"
-	"sync/atomic"
 
 	"math/rand/v2"
 
@@ -73,7 +72,8 @@ func (s *lockFreeSample) Size() int {
 func (s *lockFreeSample) Snapshot() metrics.Sample {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	count := atomic.SwapInt64(&s.count, 0)
+	count := s.count
+	s.count = 0
 	values := make([]int64, min(int(count), len(s.values)))
 	copy(values, s.values)
 	return metrics.NewSampleSnapshot(count, values)
@@ -91,11 +91,13 @@ func (s *lockFreeSample) Sum() int64 {
 	return metrics.SampleSum(s.values)
 }
 
-//go:norace
 func (s *lockFreeSample) Update(v int64) {
-	// we accept a data race here to reduce lock
-	// contention and to increase performance
-	count := atomic.AddInt64(&s.count, 1)
+	// Count, slot selection and publication must be one operation relative to
+	// snapshots and clears. An atomic count alone cannot protect the reservoir.
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.count++
+	count := s.count
 	if int(count) <= len(s.values) {
 		s.values[count-1] = v
 	} else {
