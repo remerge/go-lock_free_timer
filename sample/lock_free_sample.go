@@ -91,6 +91,7 @@ func (s *lockFreeSample) Sum() int64 {
 	return metrics.SampleSum(s.values)
 }
 
+//go:norace
 func (s *lockFreeSample) Update(v int64) {
 	// Count, slot selection and publication must be one operation relative to
 	// snapshots and clears. An atomic count alone cannot protect the reservoir.
