@@ -1,14 +1,14 @@
 # Lock Free Timer for Go
 
-Provides lock free timer and sample
+Provides interval-snapshot timers and samples.
 
 ## Timer package
 
 Package `lft` provides a `Timer` compatible with
-`github.com/rcrowley/go-metrics` without a mutex on the hot `Update` code path.
-
-The implementation accepts a data race in exchange for much lower mutex
-contention and latency impact on high volume code paths.
+`github.com/rcrowley/go-metrics`.
+Historical public names remain compatible.
+The reservoir synchronizes updates with reads, snapshots and clears.
+It no longer accepts concurrent unsynchronized writes as a performance trade-off.
 
 It's important to note that as the samples used for the timer are essentially
 cleared during each snapshot, the lock free timer is only suitable for cases
@@ -42,6 +42,10 @@ t.UpdateSince(start)
 ```
 
 ## Benchmark
+
+The figures below describe the earlier racy implementation.
+They do not measure the synchronized reservoir.
+Benchmark current concurrency and snapshot rates before deployment.
 
 ```plain
 BenchmarkUpdate-4                3000000               458 ns/op
